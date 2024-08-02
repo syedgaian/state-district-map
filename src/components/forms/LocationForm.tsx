@@ -19,6 +19,7 @@ import {
 import { Button } from "../ui/button";
 import { states } from "./state-data";
 import { Feature, MultiPolygon } from "geojson";
+import Spinner from "../loaders/Spinner";
 
 type LocationFormProps = {
 	setGeoJsonData: Dispatch<SetStateAction<Feature<MultiPolygon>>>;
@@ -28,6 +29,7 @@ export default function LocationForm({ setGeoJsonData }: LocationFormProps) {
 	const [districts, setDistricts] = useState<string[]>([]);
 	const [selectedDistrict, setSelectedDistrict] = useState<string>("");
 	const [selectedState, setSelectedState] = useState<string>("");
+	const [isLoading, setLoading] = useState<boolean>(false);
 
 	const handleStateChange = (value: string) => {
 		setSelectedState(value);
@@ -46,12 +48,14 @@ export default function LocationForm({ setGeoJsonData }: LocationFormProps) {
 
 	const handleSubmit = async (event: React.FormEvent) => {
 		event.preventDefault();
+		if (isLoading) return;
 		if (!selectedDistrict || !selectedState) {
 			alert("Please select both state and district.");
 			return;
 		}
 
 		try {
+			setLoading(true);
 			const url = `https://nominatim.openstreetmap.org/search?q=${selectedDistrict},${selectedState}&format=json&polygon_geojson=1`;
 			const response = await fetch(url, {
 				method: "GET",
@@ -61,11 +65,15 @@ export default function LocationForm({ setGeoJsonData }: LocationFormProps) {
 			});
 			if (response.ok) {
 				const result = await response.json();
-				const match = result.find(
-					(res: any) =>
-						res.addresstype === "state_district" ||
-						res.addresstype === "county"
-				);
+				const match = result.find((res: any) => {
+					return (
+						(res.addresstype === "state_district" ||
+							res.addresstype === "county" ||
+							res.addresstype === "suburb") &&
+						(res.geojson?.type === "Polygon" ||
+							res.geojson?.type === "MultiPolygon")
+					);
+				});
 				if (match) {
 					setGeoJsonData({
 						type: "Feature",
@@ -81,7 +89,9 @@ export default function LocationForm({ setGeoJsonData }: LocationFormProps) {
 			} else {
 				throw new Error("Unable to make request!!");
 			}
+			setLoading(false);
 		} catch (error) {
+			setLoading(false);
 			console.error("Error submitting form:", error);
 			alert("Error submitting form. Please try again.");
 		}
@@ -149,7 +159,7 @@ export default function LocationForm({ setGeoJsonData }: LocationFormProps) {
 				</CardContent>
 				<CardFooter>
 					<Button type="submit" className="w-full">
-						Submit
+						{isLoading ? <Spinner /> : "Submit"}
 					</Button>
 				</CardFooter>
 			</Card>
