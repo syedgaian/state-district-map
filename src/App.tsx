@@ -3,7 +3,11 @@ import "./App.css";
 import MapPage from "./pages/MapPage";
 
 const App: React.FC = () => {
-	return <MapPage />;
+	return (
+		<div className="h-lvh w-dvw">
+			<MapPage />
+		</div>
+	);
 };
 
 export default App;

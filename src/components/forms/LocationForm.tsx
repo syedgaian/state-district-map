@@ -100,7 +100,7 @@ export default function LocationForm({ setGeoJsonData }: LocationFormProps) {
 	return (
 		<form
 			onSubmit={handleSubmit}
-			className="flex justify-center items-center h-screen"
+			className="flex justify-center items-center h-screen w-[30%]"
 		>
 			<Card className="w-full max-w-md p-6 space-y-4">
 				<CardHeader>

@@ -1,78 +1,70 @@
-import React, { useEffect, useRef } from "react";
-import {
-	MapContainer,
-	TileLayer,
-	GeoJSON,
-	Marker,
-	useMap,
-} from "react-leaflet";
+import React, { useState } from "react";
+import { MapContainer } from "react-leaflet";
 import { Feature, MultiPolygon } from "geojson";
-import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import MapComponent from "./MapComponent";
+import { Toggle } from "../ui/toggle";
+import { MousePointerClick } from "lucide-react";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from "../ui/tooltip";
+import TimerResetIcon from "../icons/timer-reset";
 
-interface CityMapProps {
+export interface CityMapProps {
 	center: [number, number];
 	geoJsonData: Feature<MultiPolygon>;
 }
 
-const MapComponent: React.FC<CityMapProps> = ({ center, geoJsonData }) => {
-	const map = useMap();
-	const geoJsonLayerRef = useRef<L.GeoJSON | null>(null);
-	const markerRef = useRef<L.Marker<any>>(null);
-
-	useEffect(() => {
-		map.setView(center, map.getZoom(), {
-			animate: true,
-		});
-	}, [center, map]);
-
-	const onEachFeature = (feature: any, layer: L.Layer) => {
-		if (feature.properties && feature.properties.name) {
-			layer.bindPopup(feature.properties.name);
-		}
-	};
-
-	useEffect(() => {
-		if (geoJsonLayerRef.current) {
-			geoJsonLayerRef.current.clearLayers();
-			geoJsonLayerRef.current.addData(geoJsonData);
-		}
-	}, [geoJsonData]);
-
-	useEffect(() => {
-		if (markerRef.current) {
-			markerRef.current.setLatLng(center);
-		}
-		map.setView(center, map.getZoom(), {
-			animate: true,
-		});
-	}, [center, map]);
-
-	return (
-		<>
-			<TileLayer
-				url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-				attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-			/>
-			<Marker position={center} ref={markerRef} />
-			<GeoJSON
-				data={geoJsonData}
-				onEachFeature={onEachFeature}
-				ref={geoJsonLayerRef}
-			/>
-		</>
-	);
-};
-
 const CityMap: React.FC<CityMapProps> = ({ center, geoJsonData }) => {
+	const [isSelectEnabled, enableSelect] = useState<boolean>(false);
+	const [shouldTriggerReset, setReset] = useState<boolean>(false);
 	return (
-		<MapContainer
-			center={center}
-			zoom={13}
-			style={{ height: "100vh", width: "100%" }}
-		>
-			<MapComponent center={center} geoJsonData={geoJsonData} />
-		</MapContainer>
+		<div className="w-full h-full">
+			<div className="flex items-center justify-end space-x-2">
+				<TooltipProvider>
+					<Toggle
+						pressed={isSelectEnabled}
+						onPressedChange={() => enableSelect((prev) => !prev)}
+					>
+						<Tooltip>
+							<TooltipTrigger asChild>
+								<MousePointerClick />
+							</TooltipTrigger>
+							<TooltipContent>Enable Selection</TooltipContent>
+						</Tooltip>
+					</Toggle>
+					<Tooltip>
+						<TooltipTrigger asChild>
+							<Toggle
+								pressed={shouldTriggerReset}
+								onPressedChange={() =>
+									setReset((prev) => !prev)
+								}
+							>
+								<TimerResetIcon className="h-5 w-5" />
+							</Toggle>
+						</TooltipTrigger>
+						<TooltipContent>Reset</TooltipContent>
+					</Tooltip>
+				</TooltipProvider>
+			</div>
+			<MapContainer
+				center={center}
+				zoom={13}
+				style={{ height: "100%", width: "100%" }}
+			>
+				<MapComponent
+					isSelectEnabled={isSelectEnabled}
+					center={center}
+					geoJsonData={geoJsonData}
+					shouldTriggerReset={shouldTriggerReset}
+					setReset={setReset}
+				/>
+			</MapContainer>
+		</div>
 	);
 };
 

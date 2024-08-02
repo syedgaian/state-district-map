@@ -18,7 +18,7 @@ const MapPage: React.FC = () => {
 
 	return (
 		<div className="w-full h-full flex flex-col">
-			<h1 className="text-center my-8">City Map with GeoJSON</h1>
+			<h1 className="text-center my-4">City Map with GeoJSON</h1>
 			<div className="w-full flex flex-1">
 				<CityMap center={center} geoJsonData={geoJsonData} />
 				<LocationForm setGeoJsonData={setGeoJsonData} />
