@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
 	Card,
 	CardHeader,
@@ -16,8 +17,20 @@ import {
 	SelectItem,
 } from "../ui/select";
 import { Button } from "../ui/button";
+import { states } from "./state-data";
 
 export default function LocationForm() {
+	const [districts, setDistricts] = useState<string[]>([]);
+
+	const handleStateChange = (value: string) => {
+		const state = states.find((state) => state.name === value);
+		if (state) {
+			setDistricts(state.districts);
+		} else {
+			setDistricts([]);
+		}
+	};
+
 	return (
 		<div className="flex justify-center items-center h-screen">
 			<Card className="w-full max-w-md p-6 space-y-4">
@@ -30,28 +43,20 @@ export default function LocationForm() {
 				<CardContent className="space-y-4">
 					<div className="space-y-2">
 						<Label htmlFor="state">State</Label>
-						<Select>
+						<Select onValueChange={handleStateChange}>
 							<SelectTrigger id="state">
 								<SelectValue placeholder="Select state" />
 							</SelectTrigger>
 							<SelectContent>
 								<SelectGroup>
-									<SelectItem value="CA">
-										California
-									</SelectItem>
-									<SelectItem value="TX">Texas</SelectItem>
-									<SelectItem value="NY">New York</SelectItem>
-									<SelectItem value="FL">Florida</SelectItem>
-									<SelectItem value="IL">Illinois</SelectItem>
-									<SelectItem value="PA">
-										Pennsylvania
-									</SelectItem>
-									<SelectItem value="OH">Ohio</SelectItem>
-									<SelectItem value="GA">Georgia</SelectItem>
-									<SelectItem value="NC">
-										North Carolina
-									</SelectItem>
-									<SelectItem value="MI">Michigan</SelectItem>
+									{states.map((state) => (
+										<SelectItem
+											key={state.name}
+											value={state.name}
+										>
+											{state.name}
+										</SelectItem>
+									))}
 								</SelectGroup>
 							</SelectContent>
 						</Select>
@@ -64,21 +69,14 @@ export default function LocationForm() {
 							</SelectTrigger>
 							<SelectContent>
 								<SelectGroup>
-									<SelectItem value="district1">
-										District 1
-									</SelectItem>
-									<SelectItem value="district2">
-										District 2
-									</SelectItem>
-									<SelectItem value="district3">
-										District 3
-									</SelectItem>
-									<SelectItem value="district4">
-										District 4
-									</SelectItem>
-									<SelectItem value="district5">
-										District 5
-									</SelectItem>
+									{districts.map((district) => (
+										<SelectItem
+											key={district}
+											value={district}
+										>
+											{district}
+										</SelectItem>
+									))}
 								</SelectGroup>
 							</SelectContent>
 						</Select>

@@ -11,10 +11,12 @@ const App: React.FC = () => {
 	const center = calculateGeoJsonCenter(geojson);
 
 	return (
-		<div className="App">
-			<h1>City Map with GeoJSON</h1>
-			<CityMap center={center} geoJsonData={geojson} />
-			<LocationForm />
+		<div className="w-full h-full flex flex-col">
+			<h1 className="text-center my-8">City Map with GeoJSON</h1>
+			<div className="w-full flex flex-1">
+				<CityMap center={center} geoJsonData={geojson} />
+				<LocationForm />
+			</div>
 		</div>
 	);
 };
