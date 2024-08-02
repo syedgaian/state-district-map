@@ -62,8 +62,10 @@ const MapComponent: React.FC<MapComponentProps> = ({
 	}, [center, map]);
 
 	const handleMapClick = (e: L.LeafletMouseEvent) => {
-		const { latlng } = e;
-		setSelectedPoints([...selectedPoints, [latlng.lat, latlng.lng]]);
+		if (isSelectEnabled) {
+			const { latlng } = e;
+			setSelectedPoints([...selectedPoints, [latlng.lat, latlng.lng]]);
+		}
 	};
 
 	const getGeoJson = () => {
@@ -84,6 +86,12 @@ const MapComponent: React.FC<MapComponentProps> = ({
 			setReset(false);
 		}
 	}, [shouldTriggerReset]);
+
+	useEffect(() => {
+		if (!isSelectEnabled) {
+			map.removeEventListener("click");
+		}
+	}, [isSelectEnabled]);
 
 	return (
 		<div className="w-full h-full">
