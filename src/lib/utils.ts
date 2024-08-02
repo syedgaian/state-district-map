@@ -10,7 +10,7 @@ export function cn(...inputs: ClassValue[]) {
 export function calculateGeoJsonCenter(
 	geoJson: Feature<MultiPolygon>
 ): [number, number] {
-	const centroid = turf.centroid(geoJson);
+	const centroid = turf.center(geoJson);
 	const coordinates = centroid.geometry.coordinates as [number, number];
 	// [lat, long]
 	return [coordinates[1], coordinates[0]];
