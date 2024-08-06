@@ -51,7 +51,7 @@ const CityMap = ({ center, geoJsonData, surveyGeoJsonData, zoom }) => {
 			<MapContainer
 				center={center}
 				zoom={zoom}
-				style={{ height: "100%", width: "100%", zIndex: 0 }}
+				style={{ height: "90%", width: "100%", zIndex: 0 }}
 			>
 				<MapComponent
 					isSelectEnabled={isSelectEnabled}
