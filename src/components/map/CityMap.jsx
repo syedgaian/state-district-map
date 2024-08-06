@@ -12,7 +12,7 @@ import {
 } from "../ui/tooltip";
 import TimerResetIcon from "../icons/timer-reset";
 
-const CityMap = ({ center, geoJsonData, surveyGeoJsonData }) => {
+const CityMap = ({ center, geoJsonData, surveyGeoJsonData, zoom }) => {
   const [isSelectEnabled, enableSelect] = useState(false);
   const [shouldTriggerReset, setReset] = useState(false);
 
@@ -46,7 +46,7 @@ const CityMap = ({ center, geoJsonData, surveyGeoJsonData }) => {
       </div>
       <MapContainer
         center={center}
-        zoom={13}
+        zoom={zoom}
         style={{ height: "100%", width: "100%" }}
       >
         <MapComponent

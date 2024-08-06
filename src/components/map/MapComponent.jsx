@@ -22,6 +22,7 @@ const MapComponent = ({
     });
   }, [center, map]);
 
+
   const onEachFeature = (feature, layer) => {
     if (feature.properties && feature.properties.name) {
       layer.bindPopup(feature.properties.name);
@@ -101,6 +102,7 @@ const MapComponent = ({
         <GeoJSON
           data={surveyGeoJsonData}
           style={{ color: "red" }}
+          onEachFeature={onEachFeature}
           ref={surveyGeoJsonLayerRef}
         />
       )}
@@ -118,4 +120,3 @@ const MapComponent = ({
 };
 
 export default MapComponent;
-

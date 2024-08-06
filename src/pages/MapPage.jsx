@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import CityMap from "../components/map/CityMap";
 import { geojson } from "../components/map/geo-json";
-import { calculateGeoJsonCenter } from "../lib/utils";
+import { calculateGeoJsonCenter, getZoomLevel } from "../lib/utils";
 import LocationForm from "../components/forms/LocationForm";
 
 const MapPage = () => {
   const [center, setCenter] = useState([17.38714, 78.491684]);
   const [geoJsonData, setGeoJsonData] = useState(geojson);
   const [surveyGeoJsonData, setSurveyGeoJsonData] = useState(null);
+  const [surveyBounds, setSurveyBounds] = useState(null);
+  const [zoom, setZoom] = useState(13);
 
   useEffect(() => {
     if (geoJsonData) {
@@ -20,6 +22,8 @@ const MapPage = () => {
     if (surveyGeoJsonData) {
       const newCenter = calculateGeoJsonCenter(surveyGeoJsonData);
       setCenter(newCenter);
+      const zoom = getZoomLevel(surveyGeoJsonData);
+      setZoom(zoom ?? 13);
     }
   }, [surveyGeoJsonData]);
 
@@ -31,10 +35,12 @@ const MapPage = () => {
           center={center}
           geoJsonData={geoJsonData}
           surveyGeoJsonData={surveyGeoJsonData}
+		  zoom={zoom}
         />
         <LocationForm
           setGeoJsonData={setGeoJsonData}
           setSurveyGeoJsonData={setSurveyGeoJsonData}
+          setSurveyBounds={setSurveyBounds} // Pass setSurveyBounds here
         />
       </div>
     </div>

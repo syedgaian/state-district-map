@@ -21,7 +21,11 @@ import Spinner from "../loaders/Spinner";
 import { states } from "./state-data";
 import { surveyNumbers } from "./survey-data"; // Import survey numbers data
 
-export default function LocationForm({ setGeoJsonData, setSurveyGeoJsonData }) {
+export default function LocationForm({
+  setGeoJsonData,
+  setSurveyGeoJsonData,
+  setSurveyBounds,
+}) {
   const [districts, setDistricts] = useState([]);
   const [mandals, setMandals] = useState([]);
   const [villages, setVillages] = useState([]);
@@ -89,7 +93,7 @@ export default function LocationForm({ setGeoJsonData, setSurveyGeoJsonData }) {
         type: "Feature",
         geometry: {
           type: "Polygon",
-          coordinates: [survey.coordinates],
+          coordinates: survey.coordinates,
         },
         properties: {
           name: `Survey Number ${survey.surveyNumber}`,
@@ -97,6 +101,8 @@ export default function LocationForm({ setGeoJsonData, setSurveyGeoJsonData }) {
       };
       setSurveyGeoJsonData(surveyGeoJson);
       setGeoJsonData(null); // Clear district GeoJSON
+
+      // Calculate and set the bounds
     }
   };
 
@@ -274,7 +280,3 @@ export default function LocationForm({ setGeoJsonData, setSurveyGeoJsonData }) {
     </form>
   );
 }
-
-
-
-
