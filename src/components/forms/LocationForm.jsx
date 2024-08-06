@@ -6,21 +6,9 @@ import {
 	CardDescription,
 	CardContent,
 	CardFooter,
-	Card,
-	CardHeader,
-	CardTitle,
-	CardDescription,
-	CardContent,
-	CardFooter,
 } from "../ui/card";
 import { Label } from "../ui/label";
 import {
-	Select,
-	SelectTrigger,
-	SelectValue,
-	SelectContent,
-	SelectGroup,
-	SelectItem,
 	Select,
 	SelectTrigger,
 	SelectValue,
@@ -44,6 +32,7 @@ export default function LocationForm({ setGeoJsonData, setSurveyGeoJsonData }) {
 	const [selectedVillage, setSelectedVillage] = useState("");
 	const [selectedSurvey, setSelectedSurvey] = useState("");
 	const [isLoading, setLoading] = useState(false);
+	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const handleStateChange = (value) => {
 		setSelectedState(value);
@@ -175,8 +164,18 @@ export default function LocationForm({ setGeoJsonData, setSurveyGeoJsonData }) {
 				}
 			}
 		};
+	};
 
-		return (
+	const openModal = () => {
+		setIsModalOpen(true);
+	};
+
+	const closeModal = () => {
+		setIsModalOpen(false);
+	};
+
+	return (
+		<>
 			<form
 				onSubmit={handleSubmit}
 				className="flex justify-center items-center h-screen w-[30%]"
@@ -311,12 +310,16 @@ export default function LocationForm({ setGeoJsonData, setSurveyGeoJsonData }) {
 						</div>
 					</CardContent>
 					<CardFooter>
-						<Button type="submit" className="w-full">
+						<Button type="submit" className="w-full mr-1">
 							{isLoading ? <Spinner /> : "Submit"}
+						</Button>
+						<Button className="showModelButton" onClick={openModal}>
+							Modal
 						</Button>
 					</CardFooter>
 				</Card>
 			</form>
-		);
-	};
+			<Modal isOpen={isModalOpen} onClose={closeModal} />
+		</>
+	);
 }
