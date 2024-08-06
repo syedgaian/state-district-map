@@ -67,3 +67,22 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* WebKit browsers (Chrome, Safari) */
+::-webkit-scrollbar {
+  width: 0.375rem;
+  /* height: 8px; For horizontal scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  border-radius: 0.625rem;
+}
+
+::-webkit-scrollbar-track {
+  background: lightgrey;
+  border-radius: 0.625rem;
+}
+body.modal-open {
+  overflow: hidden;
+}

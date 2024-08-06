@@ -16,7 +16,7 @@ const CityMap = ({ center, geoJsonData }) => {
 	const [isSelectEnabled, enableSelect] = useState(false);
 	const [shouldTriggerReset, setReset] = useState(false);
 	return (
-		<div className="w-full h-full">
+		<div className="w-full h-full z-0">
 			<div className="flex items-center justify-end space-x-2">
 				<TooltipProvider>
 					<Toggle
