@@ -18,6 +18,10 @@ const Modal = ({ isOpen, onClose }) => {
     }
   };
 
+  function getRandomNumber(min = 70, max = 100) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
   if (!isOpen) return null;
 
   return (
@@ -49,9 +53,11 @@ const Modal = ({ isOpen, onClose }) => {
           </svg>
         </button>
         <div className="h-full flex flex-col">
-          <div className="w-full  p-4 flex flex-row justify-between gap-2">
+          <div className="w-full  p-4 flex flex-row justify-evenly gap-2">
             <div className="w-1/2 h-full">
-              <p className="text-base font-bold text-center">True Color</p>
+              <p className="text-base font-bold text-center">
+                True Color Image
+              </p>
               <img
                 src="/modalImage.png"
                 alt="Modal Image"
@@ -59,7 +65,7 @@ const Modal = ({ isOpen, onClose }) => {
               />
             </div>
             <div className="w-1/2 h-full">
-              <p className="text-base font-bold text-center">NDVI</p>
+              <p className="text-base font-bold text-center">NDVI Image</p>
               <img
                 src="/modalImage.png"
                 alt="Modal Image"
@@ -68,20 +74,71 @@ const Modal = ({ isOpen, onClose }) => {
             </div>
           </div>
           <div className="w-full p-4 overflow-y-auto">
-            <h2 className="text-xl font-bold">Crop Details</h2>
-            <ul className="mt-2 space-y-2">
-              <li>Min: 0.015251798555254936</li>
-              <li>Max: 0.015251798555254936</li>
-              <li>Mean: 0.015251798555254936</li>
-              <li>StDev: 0</li>
-              <li>Sample Count: 1</li>
-              <li>No Data Count: 0</li>
-              <li>Time Stamp: 2024-08-05T06:17:52.183Z</li>
-              <li>Yield in Tons: 1.51</li>
-              <li>Moisture Content in Percentage: 13</li>
-              <li>Cultivated Land: No</li>
-              <li>Age of Crop in Months: 7</li>
-            </ul>
+            <h2 className="text-xl font-bold text-center pb-2">Crop Details</h2>
+            <div className="w-full flex flex-row justify-evenly p-4 gap-2">
+              <ul className="space-y-2">
+                <li>
+                  <p className="mt-1">
+                    <strong className="text-gray-800">NDVI_Min: </strong>
+                    <i className="text-gray-600">0.015251798555254936</i>
+                  </p>
+                </li>
+                <li>
+                  <p className="mt-1">
+                    <strong className="text-gray-800">NDVI_Max: </strong>
+                    <i className="text-gray-600">0.015251798555254936</i>
+                  </p>
+                </li>
+                <li>
+                  <p className="mt-1">
+                    <strong className="text-gray-800">NDVI_Mean: </strong>
+                    <i className="text-gray-600">0.015251798555254936</i>
+                  </p>
+                </li>
+                <li>
+                  <p className="mt-1">
+                    <strong className="text-gray-800">StDev: </strong>
+                    <i className="text-gray-600">0</i>
+                  </p>
+                </li>
+                {/* <li>
+                  <p className="mt-1">
+                    <strong className="text-gray-800">Sample Count: </strong>
+                    <i className="text-gray-600">1</i>
+                  </p>
+                </li> */}
+              </ul>
+              <ul className="space-y-2">
+                <li>
+                  <p className="mt-1">
+                    <strong className="text-gray-800">Yield in Tons: </strong>
+                    <i className="text-gray-600">1.51</i>
+                  </p>
+                </li>
+                <li>
+                  <p className="mt-1">
+                    <strong className="text-gray-800">
+                      Moisture Content in Percentage:{" "}
+                    </strong>
+                    <i className="text-gray-600">13</i>
+                  </p>
+                </li>
+                <li>
+                  <p className="mt-1">
+                    <strong className="text-gray-800">Cultivated Land: </strong>
+                    <i className="text-gray-600">{getRandomNumber()}%</i>
+                  </p>
+                </li>
+                <li>
+                  <p className="mt-1">
+                    <strong className="text-gray-800">
+                      Age of Crop in Months:{" "}
+                    </strong>
+                    <i className="text-gray-600">7</i>
+                  </p>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
