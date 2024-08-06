@@ -4,7 +4,7 @@ import MapPage from "./pages/MapPage";
 
 const App = () => {
 	return (
-		<div className="h-lvh w-dvw">
+		<div className="h-lvh w-full">
 			<MapPage />
 		</div>
 	);
